@@ -16,13 +16,18 @@ public class LevelManager : MonoBehaviour {
 	// The SwitchController
 	public SwitchController theSwitch;
 
+    public bool switchEnabled;
+    public bool switchOn;
+
+    public Rigidbody2D theVase;
+
     private void Awake()
     {
         instance = this;
     }
     // Use this for initialization
     void Start () {
-	
+        switchOn = false;
 	}
 	
 	// Update is called once per frame
@@ -35,6 +40,22 @@ public class LevelManager : MonoBehaviour {
     // goes into this function that will (a) if the switch is enabled will turn it on if it is off and
     // push the Vase off the ledge and (b) if the switch is enabled will turn it off if it is on.
 	public void flipTheSwitch() {
+
+        if(switchEnabled == true)
+        {
+            if (switchOn == false) {
+                theSwitch.turnOn();
+                switchOn = true;
+
+                theVase.velocity = new Vector2(2, 2);
+            }
+
+            else if (switchOn == true)
+            {
+                theSwitch.turnOff();
+                switchOn = false;
+            }
+        }
 		
 	}
 
@@ -42,11 +63,13 @@ public class LevelManager : MonoBehaviour {
     // trigger box of the Switch. You need to write the code that goes into these functions.
     public void onSwitchTriggerEnter(Collider2D other)
     {
-
+        Debug.Log("enabled");
+        switchEnabled = true;
     }
 
     public void onSwitchTriggerExit(Collider2D other)
     {
-        
+        Debug.Log("disabled");
+        switchEnabled = false;
     }
 }
